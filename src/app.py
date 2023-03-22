@@ -48,15 +48,11 @@ def id():
         return 'invalid args', 400
 
     id_img = request.args['s']
-
-    url_curr_img = URL_IMAGES + id_img + ".jpg"
+    url_curr_img = 'http://51.250.83.169:7878/images/{x}'.format(x = id_img)
 
     p = requests.get(url_curr_img, stream=True)
-    out = open(url_curr_img, "wb")
-    body = out.write(p.content)
-
-    im = io.BytesIO(body)
-    out.close()
+    im = io.BytesIO(p.content)
+    
     try:
         res = plate_reader.read_text(im)
     except UnidentifiedImageError:
